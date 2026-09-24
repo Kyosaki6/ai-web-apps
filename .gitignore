@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+
+# Secrets / máy cá nhân
+.env
+*.log
+
+# Node / build
+node_modules/
+web/dist/
+
+# Dữ liệu & artifacts nặng — KHÔNG push git (xem scripts/download_artifacts.sh)
+data/gallery/*
+!data/gallery/.gitkeep
+data/flowers/
+data/coco128/
+artifacts/**/*.pt
+artifacts/**/index.faiss
+*.zip
+
+# OS
+.DS_Store
