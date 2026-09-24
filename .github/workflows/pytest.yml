@@ -1,0 +1,19 @@
+name: pytest
+on:
+  pull_request:
+    branches: [main, develop]
+  push:
+    branches: [main, develop]
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install test deps
+        run: pip install -q "fastapi>=0.115" httpx pytest pillow pydantic python-multipart
+      - name: Run tests (models mocked, no GPU needed)
+        run: pytest -q
