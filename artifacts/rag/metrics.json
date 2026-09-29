@@ -1,0 +1,194 @@
+{
+  "model": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+  "num_test_cases": 14,
+  "hit@1": 0.9286,
+  "hit@3": 1.0,
+  "target_hit@3": 1.0,
+  "hit@3_met": true,
+  "latency_ms_p50": 16.6,
+  "latency_ms_avg": 16.46,
+  "details": [
+    {
+      "query": "Đổi trả trong mấy ngày?",
+      "expected": "doi_tra.md",
+      "retrieved": [
+        "doi_tra.md",
+        "doi_tra.md",
+        "khach_hang_than_thiet.md"
+      ],
+      "hit@1": true,
+      "hit@3": true,
+      "latency_ms": 19.33,
+      "top_score": 0.6862
+    },
+    {
+      "query": "Thời trang và giày dép được đổi size trong bao nhiêu ngày?",
+      "expected": "doi_tra.md",
+      "retrieved": [
+        "doi_tra.md",
+        "bao_hanh.md",
+        "giao_hang.md"
+      ],
+      "hit@1": true,
+      "hit@3": true,
+      "latency_ms": 16.79,
+      "top_score": 0.6111
+    },
+    {
+      "query": "Những sản phẩm nào không áp dụng đổi trả?",
+      "expected": "doi_tra.md",
+      "retrieved": [
+        "doi_tra.md",
+        "doi_tra.md",
+        "doi_tra.md"
+      ],
+      "hit@1": true,
+      "hit@3": true,
+      "latency_ms": 17.03,
+      "top_score": 0.6573
+    },
+    {
+      "query": "Giao hàng nội thành Hà Nội và TP HCM mất bao lâu?",
+      "expected": "giao_hang.md",
+      "retrieved": [
+        "giao_hang.md",
+        "doi_tra.md",
+        "bao_hanh.md"
+      ],
+      "hit@1": true,
+      "hit@3": true,
+      "latency_ms": 16.82,
+      "top_score": 0.8109
+    },
+    {
+      "query": "Đơn hàng từ bao nhiêu tiền thì được freeship miễn phí giao hàng?",
+      "expected": "giao_hang.md",
+      "retrieved": [
+        "giao_hang.md",
+        "thanh_toan.md",
+        "khach_hang_than_thiet.md"
+      ],
+      "hit@1": true,
+      "hit@3": true,
+      "latency_ms": 20.32,
+      "top_score": 0.6035
+    },
+    {
+      "query": "Phí giao hàng hỏa tốc trong 2 giờ là bao nhiêu?",
+      "expected": "giao_hang.md",
+      "retrieved": [
+        "giao_hang.md",
+        "giao_hang.md",
+        "doi_tra.md"
+      ],
+      "hit@1": true,
+      "hit@3": true,
+      "latency_ms": 13.58,
+      "top_score": 0.5689
+    },
+    {
+      "query": "Thanh toán khi nhận hàng COD tối đa bao nhiêu tiền?",
+      "expected": "thanh_toan.md",
+      "retrieved": [
+        "thanh_toan.md",
+        "thanh_toan.md",
+        "doi_tra.md"
+      ],
+      "hit@1": true,
+      "hit@3": true,
+      "latency_ms": 16.41,
+      "top_score": 0.7637
+    },
+    {
+      "query": "Điều kiện để trả góp 0% lãi suất là gì?",
+      "expected": "thanh_toan.md",
+      "retrieved": [
+        "thanh_toan.md",
+        "thanh_toan.md",
+        "khach_hang_than_thiet.md"
+      ],
+      "hit@1": true,
+      "hit@3": true,
+      "latency_ms": 16.83,
+      "top_score": 0.7069
+    },
+    {
+      "query": "Thiết bị điện tử được bảo hành mấy tháng?",
+      "expected": "bao_hanh.md",
+      "retrieved": [
+        "bao_hanh.md",
+        "bao_hanh.md",
+        "thanh_toan.md"
+      ],
+      "hit@1": true,
+      "hit@3": true,
+      "latency_ms": 15.22,
+      "top_score": 0.8105
+    },
+    {
+      "query": "Thời gian xử lý bảo hành mất bao lâu?",
+      "expected": "bao_hanh.md",
+      "retrieved": [
+        "bao_hanh.md",
+        "bao_hanh.md",
+        "doi_tra.md"
+      ],
+      "hit@1": true,
+      "hit@3": true,
+      "latency_ms": 15.01,
+      "top_score": 0.6867
+    },
+    {
+      "query": "Chi tiêu bao nhiêu để được lên hạng thành viên Bạc?",
+      "expected": "khach_hang_than_thiet.md",
+      "retrieved": [
+        "khach_hang_than_thiet.md",
+        "khach_hang_than_thiet.md",
+        "giao_hang.md"
+      ],
+      "hit@1": true,
+      "hit@3": true,
+      "latency_ms": 16.6,
+      "top_score": 0.7129
+    },
+    {
+      "query": "Một điểm ShopLite quy đổi được bao nhiêu tiền?",
+      "expected": "khach_hang_than_thiet.md",
+      "retrieved": [
+        "thanh_toan.md",
+        "khach_hang_than_thiet.md",
+        "doi_tra.md"
+      ],
+      "hit@1": false,
+      "hit@3": true,
+      "latency_ms": 16.5,
+      "top_score": 0.7306
+    },
+    {
+      "query": "Đăng nhập sai mấy lần thì bị khóa tài khoản?",
+      "expected": "tai_khoan.md",
+      "retrieved": [
+        "tai_khoan.md",
+        "tai_khoan.md",
+        "tai_khoan.md"
+      ],
+      "hit@1": true,
+      "hit@3": true,
+      "latency_ms": 16.39,
+      "top_score": 0.6445
+    },
+    {
+      "query": "Link đặt lại mật khẩu có hiệu lực trong bao lâu?",
+      "expected": "tai_khoan.md",
+      "retrieved": [
+        "tai_khoan.md",
+        "tai_khoan.md",
+        "tai_khoan.md"
+      ],
+      "hit@1": true,
+      "hit@3": true,
+      "latency_ms": 13.58,
+      "top_score": 0.7069
+    }
+  ]
+}

@@ -24,11 +24,14 @@ class FakeDetector:
 
 
 class FakeBot:
-    def stream(self, message, history=None):
+    def stream(self, message, history=None, **kwargs):
         return [{"source": "doi_tra.md", "text": "7 ngày", "score": 0.9}], iter(["Được ", "7 ngày."])
 
-    def answer(self, message, history=None):
+    def answer(self, message, history=None, **kwargs):
         return {"answer": "Được 7 ngày.", "sources": []}
+
+    def fetch_models(self, base_url=None, api_key=None):
+        return ["qwen2.5-custom", "gpt-4o-mini"]
 
 
 def png_bytes() -> bytes:
@@ -79,3 +82,16 @@ def test_chat_stream_events(client):
     with client.stream("POST", "/api/chat", json={"message": "Đổi trả?"}) as r:
         body = "".join(r.iter_text())
     assert '"type": "sources"' in body and '"type": "done"' in body and "7 ngày" in body
+
+
+def test_chat_with_question_field(client):
+    with client.stream("POST", "/api/chat", json={"question": "Đổi trả trong mấy ngày?", "model": "qwen2.5-custom"}) as r:
+        body = "".join(r.iter_text())
+    assert '"type": "sources"' in body and '"type": "done"' in body and "7 ngày" in body
+
+
+def test_chat_models(client):
+    r = client.get("/api/chat/models")
+    assert r.status_code == 200
+    assert "models" in r.json()
+    assert "qwen2.5-custom" in r.json()["models"]
