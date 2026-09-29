@@ -144,15 +144,45 @@ def gallery(item_id: int):
 
 # ---------- 4. Chatbot RAG ----------
 class ChatRequest(BaseModel):
-    message: str = Field(..., min_length=1, max_length=1000)
+    message: str | None = Field(None, max_length=1000)
+    question: str | None = Field(None, max_length=1000)
     history: list[dict] = Field(default_factory=list)
+    model: str | None = None
+    base_url: str | None = None
+    api_key: str | None = None
+
+    def get_query(self) -> str:
+        q = (self.question or self.message or "").strip()
+        if not q:
+            raise HTTPException(422, "Thiếu trường 'question' hoặc 'message'")
+        return q
+
+
+@app.get("/api/chat/models")
+def chat_models(base_url: str | None = None, api_key: str | None = None):
+    """Tự động lấy danh sách model từ OpenAI-compatible endpoint hoặc trả về model mặc định."""
+    bot = _require("llm")
+    fetch_fn = getattr(bot, "fetch_models", None)
+    if callable(fetch_fn):
+        return {"models": fetch_fn(base_url=base_url, api_key=api_key)}
+    from core.llm import RAGChatbot
+    return {"models": RAGChatbot.fetch_models(base_url=base_url, api_key=api_key)}
 
 
 @app.post("/api/chat")
 def chat(req: ChatRequest):
     """Server-Sent Events: sự kiện 'sources' trước, sau đó từng 'token', cuối cùng 'done'."""
     bot = _require("llm")
-    contexts, tokens = bot.stream(req.message, req.history)
+    query_text = req.get_query()
+    kwargs = {}
+    if req.model:
+        kwargs["model"] = req.model
+    if req.base_url:
+        kwargs["base_url"] = req.base_url
+    if req.api_key:
+        kwargs["api_key"] = req.api_key
+
+    contexts, tokens = bot.stream(query_text, req.history, **kwargs)
 
     def events():
         yield f"data: {json.dumps({'type': 'sources', 'items': contexts}, ensure_ascii=False)}\n\n"
@@ -165,7 +195,15 @@ def chat(req: ChatRequest):
 
 @app.post("/api/chat/sync")
 def chat_sync(req: ChatRequest):
-    return _require("llm").answer(req.message, req.history)
+    bot = _require("llm")
+    kwargs = {}
+    if req.model:
+        kwargs["model"] = req.model
+    if req.base_url:
+        kwargs["base_url"] = req.base_url
+    if req.api_key:
+        kwargs["api_key"] = req.api_key
+    return bot.answer(req.get_query(), req.history, **kwargs)
 
 
 # ---------- Giao diện React (nếu đã build) ----------
