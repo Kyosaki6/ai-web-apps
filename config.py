@@ -2,7 +2,16 @@
 import os
 from pathlib import Path
 
+# Đảm bảo PyTorch / Tokenizers không xung đột luồng gây EXC_BAD_ACCESS (SIGSEGV) trên macOS ARM
+os.environ.setdefault("TOKENIZERS_PARALLELISM", "false")
+os.environ.setdefault("OMP_NUM_THREADS", "1")
+
 import torch
+if hasattr(torch, "set_num_threads"):
+    try:
+        torch.set_num_threads(1)
+    except Exception:
+        pass
 
 ROOT = Path(os.environ.get("APP_ROOT", Path(__file__).resolve().parent))
 DATA_DIR = ROOT / "data"
@@ -18,6 +27,11 @@ LLM_MODEL = os.environ.get(
     "LLM_MODEL",
     "Qwen/Qwen2.5-1.5B-Instruct" if DEVICE == "cuda" else "Qwen/Qwen2.5-0.5B-Instruct",
 )
+
+# Cấu hình OpenAI-compatible endpoint tùy chọn cho LLM
+OPENAI_API_BASE = os.environ.get("OPENAI_API_BASE", "").strip() or None
+OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "").strip() or "dummy"
+OPENAI_MODEL = os.environ.get("OPENAI_MODEL", "").strip() or LLM_MODEL
 
 # Bật/tắt từng mô hình để tiết kiệm bộ nhớ, ví dụ ENABLED_MODELS="classifier,detector"
 ENABLED_MODELS = {
