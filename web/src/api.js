@@ -27,12 +27,25 @@ export function postJson(path, body) {
 
 export const getHealth = () => fetch(`${API_BASE}/api/health`).then(handle);
 
+export function getChatModels(baseUrl = '', apiKey = '') {
+  const params = new URLSearchParams();
+  if (baseUrl) params.append('base_url', baseUrl);
+  if (apiKey) params.append('api_key', apiKey);
+  const qs = params.toString() ? `?${params.toString()}` : '';
+  return fetch(`${API_BASE}/api/chat/models${qs}`).then(handle);
+}
+
 // Đọc Server-Sent Events từ POST /api/chat. EventSource không hỗ trợ POST nên đọc stream thủ công.
-export async function streamChat({ message, history, onSources, onToken, signal }) {
+export async function streamChat({ message, history, model, baseUrl, apiKey, onSources, onToken, signal }) {
+  const payload = { message, history };
+  if (model) payload.model = model;
+  if (baseUrl) payload.base_url = baseUrl;
+  if (apiKey) payload.api_key = apiKey;
+
   const res = await fetch(`${API_BASE}/api/chat`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ message, history }),
+    body: JSON.stringify(payload),
     signal,
   });
   if (!res.ok) throw new Error(`${res.status}: ${res.statusText}`);
