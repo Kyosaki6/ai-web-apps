@@ -1,0 +1,243 @@
+\documentclass[10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+
+% Setup landscape 16:10 slide dimensions
+\pdfpagewidth=10in
+\pdfpageheight=6.25in
+\setlength{\paperwidth}{10in}
+\setlength{\paperheight}{6.25in}
+\setlength{\oddsidemargin}{-0.5in}
+\setlength{\evensidemargin}{-0.5in}
+\setlength{\topmargin}{-0.8in}
+\setlength{\textwidth}{9.0in}
+\setlength{\textheight}{5.5in}
+\pagestyle{empty}
+\renewcommand{\labelitemi}{--}
+\renewcommand{\texttt}[1]{\textsl{#1}}
+
+\newcommand{\slideheader}[1]{%
+  \newpage
+  \begin{center}
+    {\LARGE #1}
+  \end{center}
+  \vspace{0.1in}
+}
+
+\newcommand{\subhead}[1]{%
+  {\textbf{#1}}
+  \vspace{0.05in}
+}
+
+\begin{document}
+
+% -------------------------------------------------------------
+% SLIDE 1: Title Slide
+% -------------------------------------------------------------
+\begin{center}
+  \vspace*{0.8in}
+  {\LARGE AI Web Apps: Unified AI Service Platform}
+
+  \vspace{0.3in}
+  {\large FastAPI Backend serving 4 AI Models with Streamlit \& React Interfaces}
+
+  \vspace{0.4in}
+  {\textbf{Development Team:}}
+
+  \vspace{0.1in}
+  Thinh (Lead + AI-01) \quad Tuan (AI-02 + DevOps) \quad Khanh (AI-03 + QA) \quad Thai (AI-04 + UI)
+
+  \vspace{0.4in}
+  {\textbf{Course:}} Advanced Web Programming -- Phenikaa University \quad | \quad Date: 01/10/2026
+\end{center}
+
+% -------------------------------------------------------------
+% SLIDE 2: Overall Architecture
+% -------------------------------------------------------------
+\slideheader{Overall System Architecture}
+
+\begin{center}
+  \includegraphics[width=5.8in]{docs/images/demo_overview.png}
+\end{center}
+
+\vspace{0.05in}
+\begin{itemize}
+  \item \textbf{Single FastAPI Backend:} Hosts all 4 AI engines; lazy-loading via \texttt{ENABLED\_MODELS}.
+  \item \textbf{Dual Frontends:} Streamlit (port 8501, API-only client) and React Vite (port 5173 / dist at 8000).
+  \item \textbf{Design Principles:} Modular core inference decoupled from web routers; centralized \texttt{config.py}.
+\end{itemize}
+
+% -------------------------------------------------------------
+% SLIDE 3: AI-01 Flower Classification
+% -------------------------------------------------------------
+\slideheader{AI-01: Flower Classification (ResNet-18)}
+
+\begin{minipage}[c]{0.50\textwidth}
+  \includegraphics[width=4.0in]{docs/images/demo_classify.png}
+\end{minipage}
+\hfill
+\begin{minipage}[c]{0.47\textwidth}
+  {\large Highlights \& Metrics:}
+  \vspace{0.1in}
+  \begin{itemize}
+    \item \textbf{Dataset:} TF Flowers, 3,670 images, 5 classes.
+    \item \textbf{Model:} Fine-tuned ResNet-18, stratified split 80/10/10.
+    \item \textbf{Test Accuracy:} 94.8\% (Target $>$ 88\%).
+    \item \textbf{Macro F1-Score:} 0.947.
+    \item \textbf{Safety Flag:} \texttt{confident} boolean check.
+    \item \textbf{Inference Latency:} p50 = 157.6 ms on CPU.
+  \end{itemize}
+\end{minipage}
+
+% -------------------------------------------------------------
+% SLIDE 4: AI-02 Object Detection
+% -------------------------------------------------------------
+\slideheader{AI-02: Real-time Object Detection (YOLO11n)}
+
+\begin{minipage}[c]{0.50\textwidth}
+  \includegraphics[width=4.0in]{docs/images/demo_detect.jpg}
+\end{minipage}
+\hfill
+\begin{minipage}[c]{0.47\textwidth}
+  {\large Highlights \& Metrics:}
+  \vspace{0.1in}
+  \begin{itemize}
+    \item \textbf{Model:} YOLO11n pretrained on 80 classes of COCO.
+    \item \textbf{Benchmark (COCO128):}
+      \begin{itemize}
+        \item mAP@50: 0.6707 (67.1\%)
+        \item mAP@50-95: 0.5034 (50.3\%)
+      \end{itemize}
+    \item \textbf{API Output:} JSON detections, summary count, and Base64 annotated image.
+    \item \textbf{Confidence Clamp:} 0.05 to 0.95.
+    \item \textbf{Latency:} p50 = 372.9 ms on CPU.
+  \end{itemize}
+\end{minipage}
+
+% -------------------------------------------------------------
+% SLIDE 5: AI-03 Image Retrieval
+% -------------------------------------------------------------
+\slideheader{AI-03: Image Retrieval (CLIP + FAISS)}
+
+\begin{minipage}[c]{0.50\textwidth}
+  \includegraphics[width=4.0in]{docs/images/demo_search.png}
+\end{minipage}
+\hfill
+\begin{minipage}[c]{0.47\textwidth}
+  {\large Highlights \& Metrics:}
+  \vspace{0.1in}
+  \begin{itemize}
+    \item \textbf{Model:} OpenAI CLIP ViT-B/32 + FAISS IndexFlatIP.
+    \item \textbf{Gallery Dataset:} 500 flower photos across 5 classes.
+    \item \textbf{Normalized Vectors:} Cosine similarity search.
+    \item \textbf{Evaluation Metrics:}
+      \begin{itemize}
+        \item Text-to-Image P@10: 1.0000 (100\%)
+        \item Image-to-Image P@5: 0.8868 (88.7\%)
+      \end{itemize}
+    \item \textbf{Search Latency:} p50 = 37.5 ms on CPU.
+  \end{itemize}
+\end{minipage}
+
+% -------------------------------------------------------------
+% SLIDE 6: AI-04 Chatbot RAG
+% -------------------------------------------------------------
+\slideheader{AI-04: Knowledge-Base Chatbot (RAG)}
+
+\begin{minipage}[c]{0.48\textwidth}
+  {\large RAG Pipeline Architecture:}
+  \vspace{0.15in}
+  \begin{itemize}
+    \item \textbf{Corpus:} 6 ShopLite markdown policy documents in \texttt{data/kb/*.md}.
+    \item \textbf{Chunking \& Embedding:} 600-character chunks with \texttt{paraphrase-multilingual-MiniLM-L12-v2}.
+    \item \textbf{LLM Generation:} Qwen2.5-0.5B-Instruct (local CPU/GPU) or OpenAI-compatible endpoint.
+    \item \textbf{Streaming Protocol:} Server-Sent Events (SSE) streaming token-by-token.
+    \item \textbf{Retrieval Quality:} Hit@1 = 92.8\%, Hit@3 = 100.0\%.
+  \end{itemize}
+\end{minipage}
+\hfill
+\begin{minipage}[c]{0.48\textwidth}
+  {\large Safety \& Citation Invariants:}
+  \vspace{0.15in}
+  \begin{itemize}
+    \item \textbf{Source Attribution:} Mandatory citations formatted as \texttt{[file.md]}.
+    \item \textbf{Fallback Behavior:} Fallback message when query is outside domain: ``Minh chua co thong tin nay, ban vui long lien he hotline...''.
+    \item \textbf{Prompt-Injection Guard:} Strict system prompt instructing model to treat retrieved documents as data, not executable instructions.
+  \end{itemize}
+\end{minipage}
+
+% -------------------------------------------------------------
+% SLIDE 7: DevOps & Benchmark
+% -------------------------------------------------------------
+\slideheader{DevOps, Containerization \& Performance}
+
+\begin{minipage}[c]{0.48\textwidth}
+  {\large Automated Testing \& QA (pytest):}
+  \vspace{0.1in}
+  \begin{itemize}
+    \item \textbf{Test Suite:} 31 unit and integration tests.
+    \item \textbf{Mocked Models:} 0 GPU required, runs in $<$ 1.0s.
+    \item \textbf{Pass Rate:} 100\% (31/31 passed).
+    \item \textbf{CI/CD:} GitHub Actions runs on every push and PR to develop/main.
+  \end{itemize}
+
+  \vspace{0.15in}
+  {\large Docker Deployment:}
+  \vspace{0.1in}
+  \begin{itemize}
+    \item Multi-stage Dockerfile (Node 22 build $\rightarrow$ Python 3.11 slim).
+    \item Hugging Face Spaces port 7860 compatibility.
+  \end{itemize}
+\end{minipage}
+\hfill
+\begin{minipage}[c]{0.48\textwidth}
+  {\large Latency Benchmark (Intel/AMD CPU):}
+  \vspace{0.1in}
+  \begin{center}
+    \begin{tabular}{|l|c|c|c|}
+      \hline
+      \textbf{Endpoint} & \textbf{p50 (ms)} & \textbf{p95 (ms)} & \textbf{Status} \\
+      \hline
+      GET /api/health & 2.95 & 3.58 & 100\% \\
+      POST /api/classify & 157.66 & 166.71 & 100\% \\
+      POST /api/detect & 372.94 & 1560.97 & 100\% \\
+      POST /api/search/text & 37.55 & 43.57 & 100\% \\
+      \hline
+    \end{tabular}
+  \end{center}
+
+  \vspace{0.1in}
+  \begin{itemize}
+    \item \textbf{Memory Usage:} $\sim$3.5 GB RSS with all 4 models concurrent.
+    \item Lightweight mode: $\sim$700 MB for classifier + detector.
+  \end{itemize}
+\end{minipage}
+
+% -------------------------------------------------------------
+% SLIDE 8: Conclusion
+% -------------------------------------------------------------
+\slideheader{Project Summary \& Deliverables}
+
+\vspace{0.2in}
+\begin{center}
+  \begin{tabular}{|l|l|l|}
+    \hline
+    \textbf{Category} & \textbf{Deliverable} & \textbf{Status} \\
+    \hline
+    Source Code & GitHub Repository (\texttt{Kyosaki6/ai-web-apps}) & Clean \& Documented \\
+    AI Models & ResNet-18, YOLO11n, CLIP+FAISS, Qwen2.5 RAG & All 4 Operational \\
+    API & FastAPI Backend with Swagger at \texttt{/docs} & Validated \\
+    Web UI & Streamlit App (8501) + React SPA (8000) & Responsive \\
+    Testing & 31 Mocked Pytests & 100\% PASS \\
+    Deployment & Multi-stage Dockerfile + Spaces Ready & Ready \\
+    Slides & LaTeX Presentation & Compiled to PDF \\
+    \hline
+  \end{tabular}
+\end{center}
+
+\vspace{0.4in}
+\begin{center}
+  {\LARGE Thank You! Any Questions?}
+\end{center}
+
+\end{document}
