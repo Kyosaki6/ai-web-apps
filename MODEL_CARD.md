@@ -14,7 +14,7 @@
 
 ## 3. Tìm kiếm ảnh (retrieval)
 - **Mô hình:** CLIP ViT-B/32 + FAISS (`artifacts/retrieval/index.faiss`).
-- **Chỉ số:** image→image P@5, text→image P@10 — _TODO (Khánh dán từ `metrics.json`)_.
+- **Chỉ số (Flowers 500 ảnh, `artifacts/retrieval/metrics.json`):** image→image P@5: 0.8868, text→image P@10: 1.0000.
 
 ## 4. Chatbot RAG (llm)
 - **Pipeline:** chunk 600 ký tự (`data/kb/*.md`) → `paraphrase-multilingual-MiniLM-L12-v2` → Qwen2.5-1.5B-Instruct (GPU) / 0.5B (CPU).
