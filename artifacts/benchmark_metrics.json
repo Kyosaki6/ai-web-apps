@@ -1,0 +1,37 @@
+{
+  "benchmarks": {
+    "GET /api/health": {
+      "requests": 10,
+      "p50_ms": 2.95,
+      "p95_ms": 3.58,
+      "throughput_req_per_s": 331.68,
+      "success_rate_pct": 100.0
+    },
+    "POST /api/classify": {
+      "requests": 10,
+      "p50_ms": 157.66,
+      "p95_ms": 166.71,
+      "throughput_req_per_s": 6.31,
+      "success_rate_pct": 100.0
+    },
+    "POST /api/detect": {
+      "requests": 10,
+      "p50_ms": 372.94,
+      "p95_ms": 1560.97,
+      "throughput_req_per_s": 1.65,
+      "success_rate_pct": 100.0
+    },
+    "POST /api/search/text": {
+      "requests": 10,
+      "p50_ms": 37.55,
+      "p95_ms": 43.57,
+      "throughput_req_per_s": 26.59,
+      "success_rate_pct": 100.0
+    }
+  },
+  "system": {
+    "ram_rss_mb": 3529.7,
+    "cpu_percent": 42.0,
+    "logical_cpus": 8
+  }
+}
