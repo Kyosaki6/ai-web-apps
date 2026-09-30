@@ -1,7 +1,16 @@
 # AI Web Apps — Streamlit & React
 
-Bốn ứng dụng AI (phân loại ảnh, phát hiện đối tượng, tìm kiếm ảnh, chatbot RAG) sau một backend FastAPI,
-với hai giao diện: Streamlit và React.
+Bốn ứng dụng AI (phân loại hoa ResNet-18, phát hiện đối tượng YOLO11n, tìm kiếm ảnh CLIP+FAISS, chatbot RAG Qwen2.5) sau một backend FastAPI, với hai giao diện: Streamlit và React (Vite).
+
+![AI Web Apps Overview](docs/images/demo_overview.png)
+
+## Demo các tính năng AI
+
+| 1. Phân loại hoa (ResNet-18) | 2. Phát hiện đối tượng (YOLO11n) |
+| :---: | :---: |
+| ![Classify](docs/images/demo_classify.png) | ![Detect](docs/images/demo_detect.jpg) |
+| **3. Tìm kiếm ảnh (CLIP + FAISS)** | **4. Chatbot RAG (Qwen2.5 + MiniLM)** |
+| ![Search](docs/images/demo_search.png) | Streaming SSE + Trích dẫn nguồn tài liệu `[file.md]` |
 
 ## Chạy trên máy (Python 3.11, Node 22)
 ```bash
@@ -13,9 +22,22 @@ uvicorn api.main:app --port 8000 --reload             # backend; mở http://loc
 API_URL=http://localhost:8000 streamlit run streamlit_app.py  # Streamlit (API-only client): http://localhost:8501
 cd web && npm install && npm run dev                  # React dev: http://localhost:5173 (proxy /api → :8000)
 cd web && npm run build                               # build xong, FastAPI phục vụ luôn React ở http://localhost:8000/
-ENABLED_MODELS= pytest -q                             # test mocked, không cần GPU/model thật
+python -m pytest -q tests                             # test mocked, không cần GPU/model thật
 ```
 Máy yếu: `ENABLED_MODELS=classifier,detector uvicorn api.main:app --port 8000` để nạp ít model.
+
+## Hiệu năng & Benchmark (OPS-02)
+
+Đo lường bằng `scripts/benchmark.py` (chạy trên CPU Intel/AMD thông thường):
+
+| Endpoint | Chức năng | p50 (ms) | p95 (ms) | Tỷ lệ thành công |
+|---|---|---|---|---|
+| `GET /api/health` | Kiểm tra hệ sinh thái & model | 2.95 ms | 3.58 ms | 100% |
+| `POST /api/classify` | Phân loại hoa ResNet-18 | 157.66 ms | 166.71 ms | 100% |
+| `POST /api/detect` | Nhận diện vật thể YOLO11n | 372.94 ms | 1560.97 ms | 100% |
+| `POST /api/search/text` | Vector search CLIP + FAISS | 37.55 ms | 43.57 ms | 100% |
+
+- **Mức tiêu thụ tài nguyên:** RAM RSS ~3.5GB khi bật toàn bộ 4 mô hình đồng thời (kèm causal LM); ~700MB khi chỉ bật classifier + detector.
 
 ## Biến môi trường (xem `config.py`, mẫu ở `.env.example`)
 | Biến | Mặc định | Ý nghĩa |
