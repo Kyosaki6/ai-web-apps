@@ -22,5 +22,12 @@ artifacts/**/*.pt
 artifacts/**/index.faiss
 *.zip
 
+# LaTeX
+*.aux
+*.out
+*.toc
+*.nav
+*.snm
+
 # OS
 .DS_Store
