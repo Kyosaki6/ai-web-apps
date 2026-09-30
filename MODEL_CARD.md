@@ -10,7 +10,7 @@
 
 ## 2. Phát hiện đối tượng (detector)
 - **Mô hình:** YOLO11n, pretrain COCO (`artifacts/detector/yolo11n.pt`).
-- **Chỉ số:** mAP50 / mAP50-95 trên COCO128 — _TODO (Tuấn dán từ `model.val`)_.
+- **Chỉ số (COCO128, `artifacts/detector/metrics.json`):** mAP50 0.6707, mAP50-95 0.5034.
 
 ## 3. Tìm kiếm ảnh (retrieval)
 - **Mô hình:** CLIP ViT-B/32 + FAISS (`artifacts/retrieval/index.faiss`).
