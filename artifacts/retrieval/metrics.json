@@ -1,0 +1,8 @@
+{
+  "image_to_image_P@5": 0.8868,
+  "text_to_image_P@10": 1.0,
+  "n_images": 500,
+  "n_labels": 5,
+  "n_image_queries": 500,
+  "clip_model": "openai/clip-vit-base-patch32"
+}
