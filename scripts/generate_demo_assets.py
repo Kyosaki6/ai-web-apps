@@ -13,6 +13,22 @@ from core.detector import ObjectDetector
 from core.retrieval import ImageSearch
 
 
+def _font(size: int) -> ImageFont.FreeTypeFont:
+    """Font hỗ trợ đầy đủ dấu tiếng Việt (PIL mặc định làm vỡ dấu)."""
+    candidates = [
+        "/usr/share/fonts/dejavu-sans-fonts/DejaVuSans.ttf",
+        "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+        "/usr/share/fonts/google-noto-vf/NotoSans[wght].ttf",
+    ]
+    for path in candidates:
+        if Path(path).exists():
+            try:
+                return ImageFont.truetype(path, size)
+            except OSError:
+                continue
+    return ImageFont.load_default()
+
+
 def create_demo_assets():
     out_dir = Path("docs/images")
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -32,16 +48,16 @@ def create_demo_assets():
         thumb.thumbnail((320, 320))
         card.paste(thumb, (20, 20))
 
-        draw.text((360, 30), "AI-01: Phân loại hoa (ResNet-18)", fill=(15, 23, 42))
+        draw.text((360, 30), "AI-01: Phân loại hoa (ResNet-18)", fill=(15, 23, 42), font=_font(20))
         y = 80
         for p in res["predictions"]:
             label = p["label"]
             score = p["score"]
-            draw.text((360, y), f"{label.capitalize()}: {score * 100:.1f}%", fill=(30, 41, 59))
+            draw.text((360, y), f"{label.capitalize()}: {score * 100:.1f}%", fill=(30, 41, 59), font=_font(16))
             draw.rectangle([360, y + 25, 360 + int(score * 300), y + 40], fill=(59, 130, 246))
             draw.rectangle([360 + int(score * 300), y + 25, 660, y + 40], fill=(226, 232, 240))
             y += 60
-        draw.text((360, y + 10), f"Confident: {res['confident']}", fill=(16, 185, 129))
+        draw.text((360, y + 10), f"Confident: {res['confident']}", fill=(16, 185, 129), font=_font(16))
         card.save(out_dir / "demo_classify.png")
         print("[OK] docs/images/demo_classify.png")
 
@@ -63,7 +79,7 @@ def create_demo_assets():
             im = Image.open(p).convert("RGB")
             im.thumbnail((180, 180))
             grid.paste(im, (15 + i * 195, 15))
-            draw_grid.text((15 + i * 195, 205), f"{h['label']} ({h['score']:.2f})", fill=(30, 41, 59))
+            draw_grid.text((15 + i * 195, 205), f"{h['label']} ({h['score']:.2f})", fill=(30, 41, 59), font=_font(14))
     grid.save(out_dir / "demo_search.png")
     print("[OK] docs/images/demo_search.png")
 
@@ -71,7 +87,12 @@ def create_demo_assets():
     overview = Image.new("RGB", (960, 480), color=(15, 23, 42))
     draw_ov = ImageDraw.Draw(overview)
     draw_ov.rectangle([20, 20, 940, 70], fill=(30, 41, 59))
-    draw_ov.text((40, 35), "AI Web Apps — 4 Mô hình AI (Streamlit & React + FastAPI)", fill=(248, 250, 252))
+    draw_ov.text(
+        (40, 35),
+        "AI Web Apps — 4 Mô hình AI (Streamlit & React + FastAPI)",
+        fill=(248, 250, 252),
+        font=_font(18),
+    )
 
     # 4 ô demo
     boxes = [
@@ -82,9 +103,14 @@ def create_demo_assets():
     ]
     for title, desc, (x, y) in boxes:
         draw_ov.rectangle([x, y, x + 420, y + 150], fill=(30, 41, 59), outline=(71, 85, 105))
-        draw_ov.text((x + 20, y + 25), title, fill=(56, 189, 248))
-        draw_ov.text((x + 20, y + 70), desc, fill=(203, 213, 225))
-        draw_ov.text((x + 20, y + 105), "Trạng thái: Hoàn thành & Tích hợp API", fill=(52, 211, 153))
+        draw_ov.text((x + 20, y + 25), title, fill=(56, 189, 248), font=_font(16))
+        draw_ov.text((x + 20, y + 70), desc, fill=(203, 213, 225), font=_font(14))
+        draw_ov.text(
+            (x + 20, y + 105),
+            "Trạng thái: Hoàn thành & Tích hợp API",
+            fill=(52, 211, 153),
+            font=_font(14),
+        )
 
     overview.save(out_dir / "demo_overview.png")
     print("[OK] docs/images/demo_overview.png")
