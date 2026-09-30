@@ -30,20 +30,15 @@ Máy yếu: `ENABLED_MODELS=classifier,detector uvicorn api.main:app --port 8000
 | `CORS_ORIGINS` | `http://localhost:5173,http://localhost:8501` | Origin được gọi API |
 | `PORT` | `8000` | Cổng backend |
 | `API_URL` | `http://localhost:8000` | (Streamlit) địa chỉ backend |
-| `OPENAI_API_BASE` | _(trống = model local)_ | Base URL OpenAI-compatible, ví dụ `https://api.freetheai.xyz/v1` (có/không `/v1` đều được) |
-| `OPENAI_API_KEY` | `dummy` | API key của provider (FreeTheAI: key `fta_...` từ Discord `/signup`, không commit) |
-| `OPENAI_MODEL` | `= LLM_MODEL` | Alias model trên provider, ví dụ `glm/glm-5.1` (lấy từ `GET /api/chat/models`, KHÔNG dùng tên HuggingFace) |
 
-## Chatbot RAG qua FreeTheAI
+## Chatbot RAG qua OpenAI-compatible endpoint
 ```bash
-export OPENAI_API_BASE=https://api.freetheai.xyz/v1
-export OPENAI_API_KEY=fta_...            # Discord /signup; mỗi ngày UTC chạy /checkin một lần
-export OPENAI_MODEL=glm/glm-5.1          # alias trong https://freetheai.xyz/models
+export OPENAI_API_BASE=https://<provider>/v1
+export OPENAI_API_KEY=...
+export OPENAI_MODEL=...
 uvicorn api.main:app --port 8000
 ```
-Lỗi thường gặp: `401` = sai key (`/resetkey` để cấp lại), `403 daily_checkin_required` = chưa `/checkin`
-hôm nay, `403 model_access_denied` = alias cần role `seems_legit`, `400 unknown aliased model` =
-sai alias (kiểm tra `GET /api/chat/models`).
+Kiểm tra alias khả dụng qua `GET /api/chat/models`.
 
 ## API (Swagger: `http://localhost:8000/docs`)
 | Endpoint | Input | Output |
