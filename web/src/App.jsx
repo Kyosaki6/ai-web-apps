@@ -29,6 +29,24 @@ export default function App() {
         <h1>AI Web Apps</h1>
         <p className="muted">
           Backend: {health ? (health.status === 'ok' ? `đang chạy (${health.device})` : 'không kết nối') : 'đang kiểm tra…'}
+          {health && health.status !== 'ok' && (
+            <button
+              type="button"
+              className="button"
+              style={{ marginLeft: 12, padding: '2px 10px', fontSize: 13 }}
+              onClick={() => {
+                const cur = localStorage.getItem('API_URL') || '';
+                const url = prompt('Nhập URL Backend API (ví dụ: http://localhost:8000 hoặc https://...):', cur);
+                if (url !== null) {
+                  if (url.trim()) localStorage.setItem('API_URL', url.trim());
+                  else localStorage.removeItem('API_URL');
+                  window.location.reload();
+                }
+              }}
+            >
+              Cấu hình API URL
+            </button>
+          )}
         </p>
       </header>
       <nav className="tabs" role="tablist">
