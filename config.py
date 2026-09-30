@@ -39,7 +39,14 @@ ENABLED_MODELS = {
 }
 
 MAX_UPLOAD_MB = int(os.environ.get("MAX_UPLOAD_MB", "8"))
-CORS_ORIGINS = os.environ.get("CORS_ORIGINS", "http://localhost:5173,http://localhost:8501").split(",")
+CORS_ORIGINS = [
+    origin.strip()
+    for origin in os.environ.get(
+        "CORS_ORIGINS",
+        "http://localhost:5173,http://localhost:8501,https://kyosaki6.github.io",
+    ).split(",")
+    if origin.strip()
+]
 PORT = int(os.environ.get("PORT", "8000"))
 
 

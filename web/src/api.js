@@ -1,5 +1,6 @@
 // Mọi lời gọi backend nằm ở đây. API_BASE rỗng = cùng origin (FastAPI phục vụ bản build).
-export const API_BASE = (typeof window !== 'undefined' && localStorage.getItem('API_URL')) || import.meta.env.VITE_API_URL || '';
+const rawApi = (typeof window !== 'undefined' && localStorage.getItem('API_URL')) || import.meta.env.VITE_API_URL || '';
+export const API_BASE = rawApi.replace(/\/+$/, '');
 
 async function handle(res) {
   if (!res.ok) {
