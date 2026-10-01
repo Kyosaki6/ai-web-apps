@@ -16,7 +16,12 @@ Bốn ứng dụng AI (phân loại hoa ResNet-18, phát hiện đối tượng 
 ```bash
 pip install -r requirements.txt                       # CPU: cài torch bản CPU trước (xem Dockerfile)
 # File nặng (*.pt, *.faiss, data/gallery, data/flowers, data/coco128) không push git:
-bash scripts/download_artifacts.sh                    # điền link Drive/HF Release trước khi chạy
+bash scripts/download_artifacts.sh                    # tải tất cả models + flowers + coco128
+# Tùy chọn nâng cao:
+# python3 scripts/download_all.py --models            # chỉ tải models từ Drive
+# python3 scripts/download_all.py --flowers           # chỉ tải TF Flowers
+# python3 scripts/download_all.py --coco128           # chỉ tải COCO128
+# python3 scripts/download_all.py --force             # ghi đè file nếu đã có
 
 uvicorn api.main:app --port 8000 --reload             # backend; mở http://localhost:8000/docs (Swagger)
 API_URL=http://localhost:8000 streamlit run streamlit_app.py  # Streamlit (API-only client): http://localhost:8501
