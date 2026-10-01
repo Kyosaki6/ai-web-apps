@@ -10,7 +10,7 @@ Bốn ứng dụng AI (phân loại hoa ResNet-18, phát hiện đối tượng 
 | :---: | :---: |
 | ![Classify](docs/images/demo_classify.png) | ![Detect](docs/images/demo_detect.jpg) |
 | **3. Tìm kiếm ảnh (CLIP + FAISS)** | **4. Chatbot RAG (Qwen2.5 + MiniLM)** |
-| ![Search](docs/images/demo_search.png) | Streaming SSE + Trích dẫn nguồn tài liệu `[file.md]` |
+| ![Search](docs/images/demo_search.png) | ![Chatbot](docs/images/demo_chatbot.png) |
 
 ## Chạy trên máy (Python 3.11, Node 22)
 ```bash
